@@ -1,0 +1,108 @@
+// Source code is decompiled from a .class file using FernFlower decompiler.
+import java.awt.Component;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+
+public class CurrencyConverterGUI extends JFrame implements ActionListener {
+   String[] currencies = new String[]{"USD", "INR", "EUR", "GBP"};
+   JComboBox<String> fromCurrency;
+   JComboBox<String> toCurrency;
+   JTextField amountField;
+   JLabel resultLabel;
+   JButton convertButton;
+
+   public CurrencyConverterGUI() {
+      this.setTitle("Currency Converter");
+      this.setSize(400, 250);
+      this.setLocationRelativeTo((Component)null);
+      this.setDefaultCloseOperation(3);
+      this.setLayout(new GridLayout(6, 1));
+      this.amountField = new JTextField();
+      this.fromCurrency = new JComboBox(this.currencies);
+      this.toCurrency = new JComboBox(this.currencies);
+      this.convertButton = new JButton("Convert");
+      this.resultLabel = new JLabel("Result: ", 0);
+      this.add(new JLabel("Enter Amount:", 0));
+      this.add(this.amountField);
+      this.add(new JLabel("From Currency:", 0));
+      this.add(this.fromCurrency);
+      this.add(new JLabel("To Currency:", 0));
+      this.add(this.toCurrency);
+      this.add(this.convertButton);
+      this.add(this.resultLabel);
+      this.convertButton.addActionListener(this);
+   }
+
+   public void actionPerformed(ActionEvent var1) {
+      try {
+         double var2 = Double.parseDouble(this.amountField.getText());
+         String var4 = (String)this.fromCurrency.getSelectedItem();
+         String var5 = (String)this.toCurrency.getSelectedItem();
+         double var6 = this.getExchangeRate(var4, var5);
+         double var8 = var2 * var6;
+         this.resultLabel.setText(String.format("Result: %.2f %s", var8, var5));
+      } catch (NumberFormatException var10) {
+         JOptionPane.showMessageDialog(this, "Please enter a valid amount.");
+      }
+
+   }
+
+   private double getExchangeRate(String var1, String var2) {
+      double var3 = 83.15;
+      double var5 = 89.23;
+      double var7 = 105.5;
+      double var9 = 1.0 / var3;
+      double var10000 = var5 / var3;
+      var10000 = var7 / var3;
+      double var15;
+      switch (var1) {
+         case "USD":
+            var15 = 83.15;
+            break;
+         case "EUR":
+            var15 = 89.23;
+            break;
+         case "GBP":
+            var15 = 105.5;
+            break;
+         default:
+            var15 = 1.0;
+      }
+
+      double var17 = 1.0;
+      if (!var1.equals("INR")) {
+         var17 = 1.0 * var15;
+      }
+
+      double var19;
+      switch (var2) {
+         case "USD":
+            var19 = var9;
+            break;
+         case "EUR":
+            var19 = 1.0 / var5;
+            break;
+         case "GBP":
+            var19 = 1.0 / var7;
+            break;
+         default:
+            var19 = 1.0;
+      }
+
+      return var17 * var19;
+   }
+
+   public static void main(String[] var0) {
+      SwingUtilities.invokeLater(() -> {
+         (new CurrencyConverterGUI()).setVisible(true);
+      });
+   }
+}
